@@ -1,9 +1,11 @@
 #include <iostream>
+#include <curl/curl.h>
 
 
 auto main() -> int
 {
-    std::cout << "Hi\n";
+    auto handle = curl_easy_init();
+    curl_easy_cleanup(handle);
 
     return 0;
 }
