@@ -3,6 +3,13 @@
 #include <curl/curl.h>
 
 
+auto write_callback(char* ptr, size_t size, size_t nmemb, void* userdata) -> size_t
+{
+    std::cout << "ptr = " << (void*)ptr << ", size = " << size << ", nmemb = " << nmemb << ", userdata = " << userdata << "\n";
+    ((std::string*)userdata)->append(ptr, size * nmemb);
+    return size * nmemb;
+}
+
 auto main(int argc, char * argv[]) -> int
 {
     (void) argc;
@@ -10,12 +17,6 @@ auto main(int argc, char * argv[]) -> int
 
     auto data = std::string("arfle barfle gloop!");
     auto buffer = std::string();
-    auto write_callback = [](char* ptr, size_t size, size_t nmemb, void* userdata)
-    {
-        std::cout << "ptr = " << (void*)ptr << ", size = " << size << ", nmemb = " << nmemb << ", userdata = " << userdata << "\n";
-        ((std::string*)userdata)->append(ptr, size * nmemb);
-        return size * nmemb;
-    };
     auto handle = curl_easy_init();
     std::cout << "handle = " << handle << "\n";
 
